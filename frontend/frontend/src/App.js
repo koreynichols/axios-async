@@ -26,9 +26,29 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    // Load async data.
-    // Update state with new data.
-    // Re-render our component.
+     let userData = await API.get('/', {
+          params: {
+            results: 1,
+            inc: 'name,email,picture'
+          }
+        });
+
+            // Parse the results for ease of use.
+        userData = userData.data.results[0];
+
+        // Update state with new data and re-render our component.
+        const name = `${userData.name.first} ${userData.name.last}`;
+        const avatar = userData.picture.large;
+        const email = userData.email;
+
+        this.setState({
+          ...this.state, ...{
+            isLoading: false,
+            name,
+            avatar,
+            email
+          }
+        });
   }
 }
 
